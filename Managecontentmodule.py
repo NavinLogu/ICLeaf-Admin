@@ -42,16 +42,21 @@ class ICleafAutomation:
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Topic Name"]'))
         ).send_keys(topic_name)
+        time.sleep(4)
         self.driver.find_element(By.XPATH, "//button[contains(text(),'Add')]").click()
+        time.sleep(4)
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "(//input[@placeholder='Topic Name'])[2]"))
         ).send_keys(topic_name2)
+        time.sleep(4)
         self.driver.find_element(By.XPATH, "//button[.='Save']").click()
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '//button[@type="button" and @class="modalcommad_btn info"]'))
         ).click()
+        time.sleep(4)
 
-    def manage_content(self):
+    def manage_question(self, subject_name, topic_name, num_questions, reference_name, image_path, video_path, bulk_file_path):
+        # Navigate to Manage Content
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//span[contains(.,'Manage Content')]"))
         ).click()
@@ -59,19 +64,26 @@ class ICleafAutomation:
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[href="#/UploadQuestions"]'))
         ).click()
 
-    def select_subject_and_topic(self, subject_name, topic_name, num_questions):
+        # Select Subject
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "(//*[name()='svg'][@class='css-8mmkcg'])[1]"))
         ).click()
+        time.sleep(5)
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, f"//div[text()='{subject_name}']"))
         ).click()
+        time.sleep(5)
+        # Select Topic
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "(//*[name()='svg'][@class='css-8mmkcg'])[2]"))
         ).click()
+        time.sleep(5)
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, f"//div[text()='{topic_name}']"))
         ).click()
+        time.sleep(5)
+
+        # Select Number of Questions
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "(//*[name()='svg'][@class='css-8mmkcg'])[3]"))
         ).click()
@@ -79,7 +91,7 @@ class ICleafAutomation:
             EC.element_to_be_clickable((By.XPATH, f"//div[text()='{num_questions}']"))
         ).click()
 
-    def add_question(self, reference_name, question_text, answer):
+        # Add Question
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "(//input[@type='text'])[4]"))
         ).send_keys(reference_name)
@@ -89,23 +101,9 @@ class ICleafAutomation:
         ).click()
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "(//textarea[@class='textareaquestion'])[1]"))
-        ).send_keys(question_text)
+        ).send_keys("The component of an aircraft that provides thrust is known as the ______")
 
-    def select_question_type(self, file_path):
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[1]'))
-        ).click()
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//div[text()="Image"]'))
-        ).click()
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, "(//div[@class='iconDiv'])[1]/input[@type='file']"))
-        ).send_keys(file_path)
-        WebDriverWait(self.driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//text[.="Okay"]'))
-        ).click()
-
-    def set_answer(self, answer):
+        # Set Answer
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[2]'))
         ).click()
@@ -114,9 +112,23 @@ class ICleafAutomation:
         ).click()
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '(//input[@type="text"])[3]'))
-        ).send_keys(answer)
+        ).send_keys("Engine")
 
-    def add_video_question(self, video_path):
+        # Select Question Type and Upload Image
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[1]'))
+        ).click()
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//div[text()="Image"]'))
+        ).click()
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, "(//div[@class='iconDiv'])[1]/input[@type='file']"))
+        ).send_keys(image_path)
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//text[.="Okay"]'))
+        ).click()
+
+        # Add Video Question
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.XPATH, '(//textarea[@class="textareaquestion"])[2]'))
         ).send_keys("Importance in Flight")
@@ -133,7 +145,7 @@ class ICleafAutomation:
             EC.element_to_be_clickable((By.XPATH, '//button[@class="modalcommad_btn info"]'))
         ).click()
 
-    def finalize_question(self):
+        # Finalize Question
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[4]'))
         ).click()
@@ -156,16 +168,13 @@ class ICleafAutomation:
             EC.element_to_be_clickable((By.XPATH, "//button[@type='button']"))
         ).click()
 
-    def bulk_upload_questions(self, file_path):
+        # Bulk Upload Questions
         WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable((By.XPATH, '(//input[@type="radio"])[2]'))
         ).click()
         WebDriverWait(self.driver, 5).until(
             EC.presence_of_element_located((By.XPATH, '//input[@type="file"]'))
-        ).send_keys(file_path)
-        time.sleep(20)
-
-    def click_parse_file(self):
+        ).send_keys(bulk_file_path)
         WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable((By.XPATH, '//button[contains(text(),"Parse File")]'))
         ).click()
@@ -193,15 +202,19 @@ class ICleafAutomation:
         ).click()
         time.sleep(5)
         WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))).click()
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))
+        ).click()
         time.sleep(5)
         WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Advance Java']"))).click()
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{sub}']"))
+        ).click()
         time.sleep(5)
         WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))).click()
+            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))
+        ).click()
         WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Media']"))).click()
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{topic}']"))
+        ).click()
         time.sleep(10)
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Download')]"))
@@ -239,27 +252,109 @@ class ICleafAutomation:
         actions.move_to_element(element)
         actions.perform()
 
-    def manage_elearn_content(self, sub, topic):
+    def manage_elearn_content(self, sub, topic, audio_path):
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//span[contains(.,'Manage Content')]"))
         ).click()
         time.sleep(5)
+
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[href="#/manageElearnContent"]'))
         ).click()
         time.sleep(5)
-        WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))).click()
-        time.sleep(5)
-        WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Advance Java']"))).click()
-        time.sleep(5)
-        WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))).click()
-        WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Media']"))).click()
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[@class="elearn_new_content_btn"]'))
+        ).click()
         time.sleep(10)
 
+        WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{sub}']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))
+        ).click()
+
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{topic}']"))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[3]'))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Listen to Trainers']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, '//input[@type="file"]'))
+        ).send_keys(audio_path)
+        time.sleep(15)
+
+        WebDriverWait(self.driver, 10).until(
+           EC.element_to_be_clickable((By.XPATH, '(//button[@class="elearn_table_action_btn"])[2]'))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+           EC.element_to_be_clickable((By.XPATH, '//button[.="Okay"]'))
+        ).click()
+        time.sleep(10)
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{sub}']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))
+        ).click()
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{topic}']"))
+        ).click()
+        time.sleep(4)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//text[contains(., 'Listen to Trainers')]"))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '//button[.="View"]'))
+        ).click()
+        time.sleep(5)
+
+        self.driver.save_screenshot("C:\\Users\\navin\\PycharmProjects\\ICLeafAdmin_Module\\screenshot\\view.png")
+
+        message_element = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//text[contains(., 'movement-200697')]"))
+        )
+        message_text = message_element.text
+        print("Text message displayed above ", message_text)
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '//div[@class="qqv_icon_container modal-header"]'))
+        ).click()
+        time.sleep(15)
 
 # Example usage
 if __name__ == "__main__":
@@ -267,17 +362,11 @@ if __name__ == "__main__":
     automation.setup()
     automation.select_language("english")
     automation.login("icadmin", "icleaf@admin")
-    automation.create_subject("testCases1", "whiteboxtesting11", "Blackboxtesting11")
-    automation.manage_content()
-    automation.select_subject_and_topic("Aeronautical Engineering", "Engineering", "2")
-    automation.add_question("icleafadminauto1", "The component of an aircraft that provides thrust is known as the ______", "Engine")
-    automation.select_question_type("C://Users/navin/OneDrive/Ratan-Tata-Quotes-14.jpg")
-    automation.set_answer("Engine")
-    automation.add_video_question("C://Users/navin/OneDrive/20770858-hd_1080_1920_30fps.mp4")
-    automation.finalize_question()
-    automation.bulk_upload_questions("C://Users/navin/Downloads/Engineering.txt")
-    automation.click_parse_file()
-    sub = "Advance Java"
-    topic = "Engineering"
-    automation.manage_question_bank(sub, topic)
-    automation.manage_elearn_content(sub, topic)
+    automation.create_subject("advance java1", "STRING", "SCRIPTS")
+    automation.manage_question("Aeronautical Engineering", "Engineering", "2",
+                               "ICADMINN"
+                               "C://Users/navin/OneDrive/Ratan-Tata-Quotes-14.jpg",
+                               "C://Users/navin/OneDrive/20770858-hd_1080_1920_30fps.mp4",
+                               "C://Users/navin/Downloads/Engineering.txt")
+    automation.manage_question_bank("Advance Java", "Media")
+    automation.manage_elearn_content("Advance Java", "Media", "C://Users/navin/OneDrive/movement-200697.mp3")

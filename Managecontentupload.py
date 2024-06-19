@@ -61,7 +61,7 @@ class ICleafAutomation:
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[href="#/UploadQuestions"]'))
         ).click()
 
-    def select_subject_and_topic(self, subject_name, topic_name, num_questions):
+    def manage_Question(self, subject_name, topic_name, num_questions):
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//span[contains(.,'Manage Content')]"))
         ).click()
@@ -252,31 +252,110 @@ class ICleafAutomation:
         actions.perform()
         return
 
-    def manage_elearn_content(self, sub, topic):
+    def manage_elearn_content(self, sub, topic, audio_path):
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//span[contains(.,'Manage Content')]"))
         ).click()
         time.sleep(5)
+
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, 'a[href="#/manageElearnContent"]'))
         ).click()
         time.sleep(5)
-        WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))).click()
-        time.sleep(5)
 
-        WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Advance Java']"))).click()
-        time.sleep(5)
-        WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))).click()
-
-        WebDriverWait(self.driver, 30).until(
-            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Media']"))).click()
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[@class="elearn_new_content_btn"]'))
+        ).click()
         time.sleep(10)
 
+        WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))
+        ).click()
+        time.sleep(5)
 
-# Example usage
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{sub}']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))
+        ).click()
+
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{topic}']"))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '(//div[@aria-hidden="true"])[3]'))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[text() = 'Listen to Trainers']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 30).until(
+            EC.element_to_be_clickable((By.XPATH, '//input[@type="file"]'))
+        ).send_keys(audio_path)
+        time.sleep(15)
+
+        WebDriverWait(self.driver, 10).until(
+           EC.element_to_be_clickable((By.XPATH, '(//button[@class="elearn_table_action_btn"])[2]'))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+           EC.element_to_be_clickable((By.XPATH, '//button[.="Okay"]'))
+        ).click()
+        time.sleep(10)
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".css-8mmkcg"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{sub}']"))
+        ).click()
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "(//input[@type = 'text'])[2]"))
+        ).click()
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, f"//div[text() = '{topic}']"))
+        ).click()
+        time.sleep(4)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//text[contains(., 'Listen to Trainers')]"))
+        ).click()
+        time.sleep(10)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '//button[.="View"]'))
+        ).click()
+        time.sleep(5)
+
+        self.driver.save_screenshot("C:\\Users\\navin\\PycharmProjects\\ICLeafAdmin_Module\\screenshot\\view.png")
+
+        message_element = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, "//text[contains(., 'movement-200697')]"))
+        )
+        message_text = message_element.text
+        print("Text message displayed above ", message_text)
+        time.sleep(5)
+
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '//div[@class="qqv_icon_container modal-header"]'))
+        ).click()
+        time.sleep(10)
+
 
 
 if __name__ == "__main__":
@@ -284,18 +363,17 @@ if __name__ == "__main__":
     automation.setup()
     automation.select_language("english")
     automation.login("icadmin", "icleaf@admin")
-    automation.create_subject("testCases", "whiteboxtesting1", "Blackboxtesting1")
-    automation.manage_content()
-    automation.select_subject_and_topic("Aeronautical Engineering", "Engineering", "2")
-    automation.add_question("icleafadminauto", "The component of an aircraft that provides thrust is known as the ______", "Engine")
-    automation.select_question_type("C://Users/navin/OneDrive/Ratan-Tata-Quotes-14.jpg")
-    automation.set_answer("Engine")
-    automation.add_video_question("C://Users/navin/OneDrive/20770858-hd_1080_1920_30fps.mp4")
-    automation.finalize_question()
-    automation.bulk_upload_questions("C://Users/navin/Downloads/Engineering.txt")
-    automation.click_parse_file()
-    sub = "Advance Java"
-    topic = "Engineering"
-    automation.manage_question_bank(sub, topic)
-    automation.manage_elearn_content(sub, topic)
-    automation.close()
+    #automation.create_subject("frontend", "neet", "Git")
+    #automation.manage_content()
+    #automation.manage_Question("Aeronautical Engineering", "Engineering", "2")
+    #automation.add_question("icadminmodule", "The component of an aircraft that provides thrust is known as the ______", "Engine")
+    #automation.select_question_type("C://Users/navin/OneDrive/Ratan-Tata-Quotes-14.jpg")
+    #automation.set_answer("Engine")
+    #automation.add_video_question("C://Users/navin/OneDrive/20770858-hd_1080_1920_30fps.mp4")
+    #automation.finalize_question()
+    #automation.bulk_upload_questions("C://Users/navin/Downloads/Engineering.txt")
+    #automation.click_parse_file()
+    #sub = "Advance Java"
+    #topic = "Engineering"
+    #automation.manage_question_bank("Advance Java", "Media")
+    automation.manage_elearn_content("Advance Java", "Media", "C://Users/navin/OneDrive/movement-200697.mp3")
