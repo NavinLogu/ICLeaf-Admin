@@ -64,3 +64,4 @@ class ConfigAcc:
         time.sleep(1)
         state.clear()
         state.send_keys("Tamil Nadu")
+        state.send_keys("Madurai")
